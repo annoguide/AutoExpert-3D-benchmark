@@ -105,6 +105,7 @@ venv.bak/
 .mypy_cache/
 data/
 data
+!src/post_process/tracker/data/
 .vscode
 .idea
 .DS_Store
