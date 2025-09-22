@@ -116,22 +116,18 @@ To set up the repository, follow these steps:
      ```bash
     python src/maks_to_3D_results.py
     ```
-3. **Post-processing (Attributes & Confidence Sorting)** 
+3. **Confidence Smoothing via 3D Tracking** 
 
      ```bash
     python src/post_process/json2pkl.py
-    ```
-4. **Confidence Smoothing via 3D Tracking** 
-
-     ```bash
     python src/post_process/average_score_by_tracking.py
     ```
-5. **3D Evaluation Metrics** 
+4. **3D Evaluation** 
 
      ```bash
     python src/eval/eval_3D_results.py
     ```    
-## Results
+## Saved Results for Fast Evaluation
 1. **2D Detection Results**
 
     Download through [GoogleDrive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=sharing)
