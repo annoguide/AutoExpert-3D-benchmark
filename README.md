@@ -78,28 +78,28 @@ To set up the repository, follow these steps:
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_train.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_train
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_val.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_val
     ```
-2. **Created AutoExpert Training Set** 
+2. **Create AutoExpert Training Set** 
 
      ```bash
     python mmdetection/tools/GD/make_2D_annos_few_shot.py
     python mmdetection/tools/GD/make_few-shot_file_name.py
     ```
-3. **Created AutoExpert Validation Set** 
+3. **Create AutoExpert Validation Set** 
 
      ```bash
     python mmdetection/tools/GD/make_2D_annos_val.py
     ```
-4. **Train GroundingDINO with Optimized Prompts**
+4. **Finetune GroundingDINO with Optimized Prompts**
 
      ```bash
     python tools/train.py mmdetection/configs/mm_grounding_dino/grounding_dino_swin-l_finetune_8xb4_20e_nuscenes_train.py
     ```
-5. **Evaluate GroundingDINO**
+5. **Save 2D Detections by the Finetuned GroundingDINO (With evaluation)**
 
      ```bash
     python tools/test.py mmdetection/configs/mm_grounding_dino/grounding_dino_swin-l_finetune_8xb4_20e_nuscenes_test.py outputs/nuscenes/weights/epoch_6.pth
     ```
-6. **Evaluate Offline Results**
+6. **Evaluate the Saved 2D Detections**
 
      ```bash
     python mmdetection/mmdet/evaluation/metrics/coco_metric.py
