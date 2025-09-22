@@ -111,27 +111,22 @@ To set up the repository, follow these steps:
      ```bash
     python src/gen_mask.py
     ```
-2. **Generate 3D Detections from 2D Masks** 
+2. **Generate 3D Cuboids for 2D Masks** 
 
      ```bash
     python src/maks_to_3D_results.py
     ```
-3. **Generate 3D Detections from 2D Masks** 
-
-     ```bash
-    python src/maks_to_3D_results.py
-    ```
-4. **Post-processing (Attributes & Confidence Sorting)** 
+3. **Post-processing (Attributes & Confidence Sorting)** 
 
      ```bash
     python src/post_process/json2pkl.py
     ```
-5. **Confidence Smoothing via 3D Tracking** 
+4. **Confidence Smoothing via 3D Tracking** 
 
      ```bash
     python src/post_process/average_score_by_tracking.py
     ```
-6. **3D Evaluation Metrics** 
+5. **3D Evaluation Metrics** 
 
      ```bash
     python src/eval/eval_3D_results.py
