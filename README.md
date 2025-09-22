@@ -74,12 +74,8 @@ To set up the repository, follow these steps:
 ### 2D Detection
 1. **​Generate COCO-format 2D Labels to Prepare Data Used in AutoExpert**
 
-    For training set
      ```bash
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_train.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_train
-    ```
-    For validation  set
-     ```bash
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_val.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_val
     ```
 2. **Generate Few-shot Annotation** 
