@@ -71,8 +71,8 @@ To set up the repository, follow these steps:
     Download through official repository: [SAM Repository](https://github.com/facebookresearch/segment-anything)
 
 ## Pipeline Execution
-### 2D Annotation Generation
-1. **​Generate COCO-format 2D Labels**
+### 2D Detection
+1. **​Generate COCO-format 2D Labels to prepare data used in auto expert**
 
     For training set
      ```bash
@@ -109,7 +109,7 @@ To set up the repository, follow these steps:
     python mmdetection/mmdet/evaluation/metrics/coco_metric.py
     ```
 
-### 3D Annotation Generation
+### 3D Cuboids Generation
 1. **Generate 2D Masks with SAM** 
 
      ```bash
