@@ -72,7 +72,7 @@ To set up the repository, follow these steps:
 
 ## Pipeline Execution
 ### 2D Detection
-1. **​Generate COCO-format 2D Labels to prepare data used in auto expert**
+1. **​Generate COCO-format 2D Labels to Prepare Data Used in AutoExpert**
 
     For training set
      ```bash
