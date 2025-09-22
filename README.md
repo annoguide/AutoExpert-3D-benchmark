@@ -1,4 +1,4 @@
-# Towards Auto-Annotation from Annotation Guidelines: A Benchmark through 3D LiDAR Detection
+# Auto-Annotation from Expert-Crafted Guidelines: A Benchmark through 3D LiDAR Detection
 
 ![Framework Overview](images/our_pipeline.png) <!-- Replace with your actual image path -->
 
