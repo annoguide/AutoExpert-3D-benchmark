@@ -78,13 +78,13 @@ To set up the repository, follow these steps:
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_train.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_train
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_val.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_val
     ```
-2. **Generate Few-shot Annotation** 
+2. **Created AutoExpert Training Set** 
 
      ```bash
     python mmdetection/tools/GD/make_2D_annos_few_shot.py
     python mmdetection/tools/GD/make_few-shot_file_name.py
     ```
-3. **Generate Small Validation Set Annotation** 
+3. **Created AutoExpert Validation Set** 
 
      ```bash
     python mmdetection/tools/GD/make_2D_annos_val.py
