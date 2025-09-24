@@ -1,4 +1,4 @@
-# Towards Auto-Annotation from Annotation Guidelines: A Benchmark through 3D LiDAR Detection
+# Auto-Annotation from Expert-Crafted Guidelines: A Benchmark through 3D LiDAR Detection
 
 ![Framework Overview](images/our_pipeline.png) <!-- Replace with your actual image path -->
 
@@ -71,76 +71,63 @@ To set up the repository, follow these steps:
     Download through official repository: [SAM Repository](https://github.com/facebookresearch/segment-anything)
 
 ## Pipeline Execution
-### 2D Annotation Generation
-1. **​Generate COCO-format 2D Labels**
+### 2D Detection
+1. **​Generate COCO-format 2D Labels to Prepare Data Used in AutoExpert**
 
-    For training set
      ```bash
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_train.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_train
-    ```
-    For validation  set
-     ```bash
     python mmdetection/tools/GD/make_2D_labels.py --info_path data/nuscenes/nuscenes_infos_val.pkl --output_dir_path data/nuscenes/samples/labels_2D_COCO/CAM_ALL_val
     ```
-2. **Generate Few-shot Annotation** 
+2. **Create AutoExpert Training Set** 
 
      ```bash
     python mmdetection/tools/GD/make_2D_annos_few_shot.py
     python mmdetection/tools/GD/make_few-shot_file_name.py
     ```
-3. **Generate Small Validation Set Annotation** 
+3. **Create AutoExpert Validation Set** 
 
      ```bash
     python mmdetection/tools/GD/make_2D_annos_val.py
     ```
-4. **Train GroundingDINO with Optimized Prompts**
+4. **Finetune GroundingDINO with Optimized Prompts**
 
      ```bash
     python tools/train.py mmdetection/configs/mm_grounding_dino/grounding_dino_swin-l_finetune_8xb4_20e_nuscenes_train.py
     ```
-5. **Evaluate GroundingDINO**
+5. **Save 2D Detections by the Finetuned GroundingDINO (with Evaluation)**
 
      ```bash
     python tools/test.py mmdetection/configs/mm_grounding_dino/grounding_dino_swin-l_finetune_8xb4_20e_nuscenes_test.py outputs/nuscenes/weights/epoch_6.pth
     ```
-6. **Evaluate Offline Results**
+6. **Evaluate the Saved 2D Detections**
 
      ```bash
     python mmdetection/mmdet/evaluation/metrics/coco_metric.py
     ```
 
-### 3D Annotation Generation
+### 3D Cuboids Generation
 1. **Generate 2D Masks with SAM** 
 
      ```bash
     python src/gen_mask.py
     ```
-2. **Generate 3D Detections from 2D Masks** 
+2. **Generate 3D Cuboids for 2D Masks** 
 
      ```bash
     python src/maks_to_3D_results.py
     ```
-3. **Generate 3D Detections from 2D Masks** 
-
-     ```bash
-    python src/maks_to_3D_results.py
-    ```
-4. **Post-processing (Attributes & Confidence Sorting)** 
+3. **Confidence Smoothing via 3D Tracking** 
 
      ```bash
     python src/post_process/json2pkl.py
-    ```
-5. **Confidence Smoothing via 3D Tracking** 
-
-     ```bash
     python src/post_process/average_score_by_tracking.py
     ```
-6. **3D Evaluation Metrics** 
+4. **3D Evaluation** 
 
      ```bash
     python src/eval/eval_3D_results.py
     ```    
-## Results
+## Saved Results for Fast Evaluation
 1. **2D Detection Results**
 
     Download through [GoogleDrive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=sharing)
