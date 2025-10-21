@@ -81,7 +81,7 @@ To set up the repository, follow these steps:
 2. **Create AutoExpert Training Set** 
 
      ```bash
-    python mmdetection/tools/GD/make_2D_annos_few_shot.py
+    python mmdetection/tools/GD/make_2D_annos_train_few_shot.py
     python mmdetection/tools/GD/make_few-shot_file_name.py
     ```
 3. **Create AutoExpert Validation Set** 
