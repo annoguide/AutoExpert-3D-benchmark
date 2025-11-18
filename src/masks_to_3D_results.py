@@ -34,46 +34,6 @@ from numba import cuda
 import warnings
 warnings.filterwarnings("ignore")
 
-VER_NAME = "v1.0-trainval"
-INPUT_PATH = "data/nuscenes/"
-
-OUTPUT_DIR = "outputs/"
-INPUT_DIR = "outputs/nuscenes/results_mask/nuscenes-gd-sam/"
-
-CAM_LIST = [
-    "CAM_FRONT",
-    "CAM_FRONT_RIGHT",
-    "CAM_BACK_RIGHT",
-    "CAM_BACK",
-    "CAM_BACK_LEFT",
-    "CAM_FRONT_LEFT",
-]
-
-DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
-
-step_xi = 0.5
-step_yi = 0.5
-step_zi = 0.5
-
-custom_vocabulary = ['car', 'truck', 'trailer', 'bus', 'construction_vehicle', 'bicycle', 'motorcycle', 'emergency_vehicle',
-                    'adult', 'child', 'police_officer', 'construction_worker', 'stroller', 'personal_mobility',
-                    'pushable_pullable', 'debris', 'traffic_cone', 'barrier'] 
-GD_PATH = "outputs/nuscenes/results_2D/result_2D_val.json"
-with open(GD_PATH, "r") as f:
-    results_GD = json.load(f)
-results_GD_new = dict()
-for result_GD in results_GD:
-    file_name = result_GD['file_name']
-    x1, y1, w, h = result_GD['bbox']
-    x2, y2 = x1 + w, y1 + h    
-    if file_name in results_GD_new:
-        results_GD_new[file_name]['boxes_filt_list'].append([x1, y1, x2, y2])
-        results_GD_new[file_name]['pred_phrases'].append(f"{custom_vocabulary[result_GD['category_id']-1]}({round(result_GD['score'], 2)})")
-    else:
-        results_GD_new[file_name] = dict()
-        results_GD_new[file_name]['boxes_filt_list'] = list()
-        results_GD_new[file_name]['pred_phrases'] = list()
-
 @cuda.jit
 def center2corner_3d_gpu(xi, yi, zi, xyz, ri, vertices):
     # 对每个顶点进行计算
@@ -551,10 +511,72 @@ def circle_nms(dets, det_labels, threshs_by_label):
                 suppressed[j] = 1
     return keep
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Process NuScenes GD JSON and reorganize detection results.")
+    parser.add_argument("--ver_name", type=str, default="v1.0-trainval",
+                        help="NuScenes version name, e.g. v1.0-trainval")
+    parser.add_argument("--input_path", type=str, default="data/nuscenes/",
+                        help="Base input path for NuScenes data")
+    parser.add_argument("--output_dir", type=str, default="outputs/",
+                        help="Base output directory")
+    parser.add_argument("--input_dir", type=str, default="outputs/nuscenes/results_mask/nuscenes-gd-sam/",
+                        help="Directory containing the mask or intermediate results")
+    parser.add_argument("--gd_path", type=str, default="data/outputs/result_2D_val.json",
+                        help="Path to the 2D grounding detection JSON file (GD results)")
 
+    args = parser.parse_args()
+
+    return args
 
 
 if __name__ == "__main__":
+
+    args = parse_args()
+    print("[INFO] Running with arguments:")
+    for k, v in vars(args).items():
+        print(f"  {k}: {v}")
+
+    VER_NAME = args.ver_name
+    INPUT_PATH = args.input_path
+    OUTPUT_DIR = args.output_dir
+    INPUT_DIR = args.input_dir
+    GD_PATH = args.gd_path
+
+    custom_vocabulary = ['car', 'truck', 'trailer', 'bus', 'construction_vehicle', 'bicycle', 'motorcycle', 'emergency_vehicle',
+                        'adult', 'child', 'police_officer', 'construction_worker', 'stroller', 'personal_mobility',
+                        'pushable_pullable', 'debris', 'traffic_cone', 'barrier'] 
+    CAM_LIST = [
+        "CAM_FRONT",
+        "CAM_FRONT_RIGHT",
+        "CAM_BACK_RIGHT",
+        "CAM_BACK",
+        "CAM_BACK_LEFT",
+        "CAM_FRONT_LEFT",
+    ]
+
+    DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
+    os.makedirs(args.output_dir, exist_ok=True)
+
+    with open(GD_PATH, "r") as f:
+        results_GD = json.load(f)
+    results_GD_new = dict()
+    for result_GD in results_GD:
+        file_name = result_GD['file_name']
+        x1, y1, w, h = result_GD['bbox']
+        x2, y2 = x1 + w, y1 + h    
+        if file_name in results_GD_new:
+            results_GD_new[file_name]['boxes_filt_list'].append([x1, y1, x2, y2])
+            results_GD_new[file_name]['pred_phrases'].append(f"{custom_vocabulary[result_GD['category_id']-1]}({round(result_GD['score'], 2)})")
+        else:
+            results_GD_new[file_name] = dict()
+            results_GD_new[file_name]['boxes_filt_list'] = list()
+            results_GD_new[file_name]['pred_phrases'] = list()
+            results_GD_new[file_name]['boxes_filt_list'].append([x1, y1, x2, y2])
+            results_GD_new[file_name]['pred_phrases'].append(f"{custom_vocabulary[result_GD['category_id']-1]}({round(result_GD['score'], 2)})")   
+    
+    step_xi = 0.5
+    step_yi = 0.5
+    step_zi = 0.5
     total_start = time.time()
     pointsensor_channel="LIDAR_TOP"
     min_dist= 2.3

@@ -145,7 +145,7 @@ class CocoMetric(BaseMetric):
             self._coco_api = None
 
         # handle dataset lazy init
-        self.cat_ids = None
+        self.cat_ids_18, self.cat_ids_24 = None, None
         self.img_ids = None
 
     def fast_eval_recall(self,
@@ -244,7 +244,7 @@ class CocoMetric(BaseMetric):
                 data['image_id'] = image_id
                 data['bbox'] = self.xyxy2xywh(bboxes[i])
                 data['score'] = float(scores[i])
-                data['category_id'] = self.cat_ids[label]
+                data['category_id'] = self.cat_ids_24[label]
                 bbox_json_results.append(data)
 
             if segm_json_results is None:
@@ -258,7 +258,7 @@ class CocoMetric(BaseMetric):
                 data['image_id'] = image_id
                 data['bbox'] = self.xyxy2xywh(bboxes[i])
                 data['score'] = float(mask_scores[i])
-                data['category_id'] = self.cat_ids[label]
+                data['category_id'] = self.cat_ids_24[label]
                 if isinstance(masks[i]['counts'], bytes):
                     masks[i]['counts'] = masks[i]['counts'].decode()
                 data['segmentation'] = masks[i]
@@ -408,7 +408,7 @@ class CocoMetric(BaseMetric):
                                         'personal_mobility', 'small kick scooter', 
                                         'pushable pullable garbage container', 'hand truck', 
                                         'debris', 'full trash bags', 'traffic_cone', 'barrier')
-        self.cat_ids = [
+        self.cat_ids_24 = [
                 0+1,
                 1+1, 
                 2+1, 2+1,
@@ -428,6 +428,26 @@ class CocoMetric(BaseMetric):
                 16+1,
                 17+1,
            ]
+        self.cat_ids_18 = [
+                0+1,
+                1+1, 
+                2+1,
+                3+1, 
+                4+1, 
+                5+1,
+                6+1,
+                7+1,
+                8+1,
+                9+1,
+                10+1,
+                11+1,
+                12+1,
+                13+1,
+                14+1,
+                15+1,
+                16+1,
+                17+1,
+           ]           
         logger: MMLogger = MMLogger.get_current_instance()
 
         # split gt and prediction list
@@ -448,8 +468,8 @@ class CocoMetric(BaseMetric):
             self._coco_api = COCO(coco_json_path)
 
         # handle lazy init
-        if self.cat_ids is None:
-            self.cat_ids = self._coco_api.get_cat_ids(
+        if self.cat_ids_18 is None:
+            self.cat_ids_18 = self._coco_api.get_cat_ids(
                 cat_names=self.dataset_meta['classes'])
             
         if self.img_ids is None:
@@ -509,7 +529,7 @@ class CocoMetric(BaseMetric):
             else:
                 coco_eval = COCOeval(self._coco_api, coco_dt, iou_type)
 
-            coco_eval.params.catIds = self.cat_ids
+            coco_eval.params.catIds = self.cat_ids_18
             coco_eval.params.imgIds = self.img_ids
             coco_eval.params.maxDets = list(self.proposal_nums)
             coco_eval.params.iouThrs = self.iou_thrs
@@ -560,10 +580,10 @@ class CocoMetric(BaseMetric):
                     # from https://github.com/facebookresearch/detectron2/
                     precisions = coco_eval.eval['precision']
                     # precision: (iou, recall, cls, area range, max dets)
-                    assert len(self.cat_ids) == precisions.shape[2]
+                    assert len(self.cat_ids_18) == precisions.shape[2]
 
                     results_per_category = []
-                    for idx, cat_id in enumerate(self.cat_ids):
+                    for idx, cat_id in enumerate(self.cat_ids_18):
                         t = []
                         # area range index 0: all area ranges
                         # max dets index -1: typically 100 per image
@@ -655,7 +675,7 @@ class CocoMetric(BaseMetric):
                                         'personal_mobility', 'small kick scooter', 
                                         'pushable pullable garbage container', 'hand truck', 
                                         'debris', 'full trash bags', 'traffic_cone', 'barrier')
-        self.cat_ids = [
+        self.cat_ids_24 = [
                 0+1,
                 1+1, 
                 2+1, 2+1,
@@ -675,9 +695,29 @@ class CocoMetric(BaseMetric):
                 16+1,
                 17+1,
            ]
+        self.cat_ids_18 = [
+                0+1,
+                1+1, 
+                2+1,
+                3+1, 
+                4+1, 
+                5+1,
+                6+1,
+                7+1,
+                8+1,
+                9+1,
+                10+1,
+                11+1,
+                12+1,
+                13+1,
+                14+1,
+                15+1,
+                16+1,
+                17+1,
+           ]  
         # handle lazy init
-        if self.cat_ids is None:
-            self.cat_ids = self._coco_api.get_cat_ids(
+        if self.cat_ids_18 is None:
+            self.cat_ids_18 = self._coco_api.get_cat_ids(
                 cat_names = self.dataset_meta['classes'])
         if self.img_ids is None:
             self.img_ids = self._coco_api.get_img_ids()
@@ -732,7 +772,7 @@ class CocoMetric(BaseMetric):
             else:
                 coco_eval = COCOeval(self._coco_api, coco_dt, iou_type)
 
-            coco_eval.params.catIds = self.cat_ids
+            coco_eval.params.catIds = self.cat_ids_18
             coco_eval.params.imgIds = self.img_ids
             coco_eval.params.maxDets = list(self.proposal_nums)
             coco_eval.params.iouThrs = self.iou_thrs
@@ -784,10 +824,10 @@ class CocoMetric(BaseMetric):
                     precisions = coco_eval.eval['precision']
                     recalls = coco_eval.eval['recall']
                     # precision: (iou, recall, cls, area range, max dets)
-                    assert len(self.cat_ids) == precisions.shape[2]
+                    assert len(self.cat_ids_18) == precisions.shape[2]
 
                     results_per_category = []
-                    for idx, cat_id in enumerate(self.cat_ids):
+                    for idx, cat_id in enumerate(self.cat_ids_18):
                         t = []
                         # area range index 0: all area ranges
                         # max dets index -1: typically 100 per image

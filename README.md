@@ -109,7 +109,8 @@ To set up the repository, follow these steps:
 1. **Generate 2D Masks with SAM** 
 
      ```bash
-    python src/gen_mask.py
+    python mmdetection/tools/GD/add_file_name_in_2D_results.py 
+    python src/gen_masks.py
     ```
 2. **Generate 3D Cuboids for 2D Masks** 
 

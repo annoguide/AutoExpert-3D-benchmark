@@ -142,5 +142,4 @@ optim_wrapper = dict(
             'language_model': dict(lr_mult=0.0)
         }))
 
-# load_from = 'weights/grounding_dino_swin-l_pretrain_all-56d69e78.pth'  # noqa
-load_from = 'outputs/nuscenes/weights/epoch_6.pth'  # noqa
+load_from = 'weights/grounding_dino_swin-l_pretrain_all-56d69e78.pth'  # noqa

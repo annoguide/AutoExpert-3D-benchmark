@@ -7,6 +7,7 @@ import time
 import numpy as np
 import torch
 import torchvision
+import argparse
 from nuscenes.nuscenes import NuScenes
 from nuscenes.utils.splits import mini_train, mini_val, train_detect, train, val
 from PIL import Image, ImageDraw
@@ -14,44 +15,7 @@ from segment_anything import SamAutomaticMaskGenerator, SamPredictor, build_sam
 from tqdm import tqdm
 import pycocotools.mask
 import pickle
-from cfg.prompt_cfg import PROMPT_MAPS
-
-
-custom_vocabulary = ['car', 'truck', 'trailer', 'bus', 'construction_vehicle', 'bicycle', 'motorcycle', 'emergency_vehicle',
-                    'adult', 'child', 'police_officer', 'construction_worker', 'stroller', 'personal_mobility',
-                    'pushable_pullable', 'debris', 'traffic_cone', 'barrier']              
-
-VER_NAME = "v1.0-trainval"
-INPUT_PATH = "data/nuscenes/"
-
-CAM_LIST = [
-    "CAM_FRONT",
-    "CAM_FRONT_RIGHT",
-    "CAM_BACK_RIGHT",
-    "CAM_BACK",
-    "CAM_BACK_LEFT",
-    "CAM_FRONT_LEFT",
-]
-
-SAM_CKPT = "checkpoint/sam_vit_h_4b8939.pth"
-OUTPUT_DIR = "outputs/nuscenes/results_mask/nuscenes-gd-sam/"
-DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
-
-GD_PATH = "outputs/nuscenes/results_2D/result_2D_val.json"
-with open(GD_PATH, "r") as f:
-    results_GD = json.load(f)
-results_GD_new = dict()
-for result_GD in results_GD:
-    file_name = result_GD['file_name']
-    x1, y1, w, h = result_GD['bbox']
-    x2, y2 = x1 + w, y1 + h    
-    if file_name in results_GD_new:
-        results_GD_new[file_name]['boxes_filt_list'].append([x1, y1, x2, y2])
-        results_GD_new[file_name]['pred_phrases'].append(f"{custom_vocabulary[result_GD['category_id']-1]}({round(result_GD['score'], 2)})")
-    else:
-        results_GD_new[file_name] = dict()
-        results_GD_new[file_name]['boxes_filt_list'] = list()
-        results_GD_new[file_name]['pred_phrases'] = list()
+from cfg.prompt_cfg import PROMPT_MAPS       
 
 def draw_mask(mask, draw, random_color=False):
     if random_color:
@@ -89,11 +53,74 @@ def map_class(name):
     sys.exit()
     return False
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="NuScenes + SAM Mask Generation Script")
+
+    parser.add_argument("--ver_name", type=str, default="v1.0-trainval",
+                        help="NuScenes version name, e.g., v1.0-trainval")
+    parser.add_argument("--data_path", type=str, default="data/nuscenes/",
+                        help="Path to the NuScenes data directory")
+    parser.add_argument("--sam_ckpt", type=str, default="weights/sam_vit_h_4b8939.pth",
+                        help="Path to the SAM checkpoint file")
+    parser.add_argument("--output_dir", type=str, default="outputs/nuscenes/results_mask/nuscenes-gd-sam/",
+                        help="Directory to save the output results")
+    parser.add_argument("--gd_path", type=str, default="data/outputs/result_2D_val.json",
+                        help="Path to the 2D ground truth or detection JSON file")
+
+    args = parser.parse_args()
+    
+
+    return args
+
 if __name__ == "__main__":
+    args = parse_args()
+
+    print("[INFO] Running with arguments:")
+    for k, v in vars(args).items():
+        print(f"  {k}: {v}")
+
+    custom_vocabulary = ['car', 'truck', 'trailer', 'bus', 'construction_vehicle', 'bicycle', 'motorcycle', 'emergency_vehicle',
+                        'adult', 'child', 'police_officer', 'construction_worker', 'stroller', 'personal_mobility',
+                        'pushable_pullable', 'debris', 'traffic_cone', 'barrier']              
+
+    VER_NAME = args.ver_name
+    DATA_PATH = args.data_path
+    CAM_LIST = [
+        "CAM_FRONT",
+        "CAM_FRONT_RIGHT",
+        "CAM_BACK_RIGHT",
+        "CAM_BACK",
+        "CAM_BACK_LEFT",
+        "CAM_FRONT_LEFT",
+    ]
+    SAM_CKPT = args.sam_ckpt
+    OUTPUT_DIR = args.output_dir
+    GD_PATH = args.gd_path
+    DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
+    os.makedirs(args.output_dir, exist_ok=True)
+
+    with open(GD_PATH, "r") as f:
+        results_GD = json.load(f)
+    results_GD_new = dict()
+    for result_GD in results_GD:
+        file_name = result_GD['file_name']
+        x1, y1, w, h = result_GD['bbox']
+        x2, y2 = x1 + w, y1 + h    
+        if file_name in results_GD_new:
+            results_GD_new[file_name]['boxes_filt_list'].append([x1, y1, x2, y2])
+            results_GD_new[file_name]['pred_phrases'].append(f"{custom_vocabulary[result_GD['category_id']-1]}({round(result_GD['score'], 2)})")
+        else:
+            results_GD_new[file_name] = dict()
+            results_GD_new[file_name]['boxes_filt_list'] = list()
+            results_GD_new[file_name]['pred_phrases'] = list()
+            results_GD_new[file_name]['boxes_filt_list'].append([x1, y1, x2, y2])
+            results_GD_new[file_name]['pred_phrases'].append(f"{custom_vocabulary[result_GD['category_id']-1]}({round(result_GD['score'], 2)})") 
+
+
     start_time = time.time()
     global blip_processor, blip_model, groundingdino_model, sam_predictor, sam_automask_generator, inpaint_pipeline
 
-    nusc = NuScenes(version=VER_NAME, dataroot=INPUT_PATH, verbose=True)
+    nusc = NuScenes(version=VER_NAME, dataroot=DATA_PATH, verbose=True)
 
     assert SAM_CKPT, "sam_checkpoint is not found!"
     sam = build_sam(checkpoint=SAM_CKPT)
