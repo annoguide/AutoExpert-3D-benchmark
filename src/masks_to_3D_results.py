@@ -517,7 +517,7 @@ def parse_args():
                         help="NuScenes version name, e.g. v1.0-trainval")
     parser.add_argument("--input_path", type=str, default="data/nuscenes/",
                         help="Base input path for NuScenes data")
-    parser.add_argument("--output_dir", type=str, default="outputs/",
+    parser.add_argument("--output_dir", type=str, default="outputs/nuscenes/results_3D/",
                         help="Base output directory")
     parser.add_argument("--input_dir", type=str, default="outputs/nuscenes/results_mask/nuscenes-gd-sam/",
                         help="Directory containing the mask or intermediate results")
@@ -1169,7 +1169,7 @@ if __name__ == "__main__":
     nms_end = time.time()
     timer["nms"] += nms_end - nms_start
 
-    with open(os.path.join(OUTPUT_DIR, "GD_OriTrained_AggCurr_CM3D_PointsNum&Mlo.json"), "w") as f:
+    with open(os.path.join(OUTPUT_DIR, "result_3D_val.json"), "w") as f:
         json.dump(final_predictions, f)
 
     print(f"wrote {len(final_predictions['results'])} samples.")
