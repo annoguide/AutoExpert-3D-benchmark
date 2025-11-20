@@ -1,49 +1,81 @@
-# Exploring Auto-Annotation with Expert-Crafted Guidelines through 3D LiDAR Detection
+# 🚗📡 Exploring Auto-Annotation with Expert-Crafted Guidelines through 3D LiDAR Detection
 
 ![Framework Overview](images/our_pipeline.png) <!-- Replace with your actual image path -->
 
-## Overview
+---
 
-### Research Background & Motivation
-- **Current Annotation Paradigm:** Relies on hiring ordinary human annotators to label data based on instructions from expert-crafted guidelines.
-- **Inherent Problems:** This paradigm is laborious, tedious, and costly.
-- **Research Goal:** To explore **auto-annotation** methods that leverage **expert**-crafted guidelines directly.
+## 🧠 Overview
 
-### The AutoExpert Benchmark
-- **Data Source:** Repurposed from the well-established nuScenes dataset, commonly used in autonomous driving research.
-- **Key Features:**
-  - Provides authentic, real-world expert-crafted annotation guidelines.
-  - Guidelines define 18 object classes using nuanced language descriptions and a few visual examples.
-  - Annotation Task: Annotating objects in LiDAR data using 3D cuboids.
-  - **Core Challenge:** The guidelines do not provide LiDAR visuals, soliciting methods that learn from few-shot labeled images and texts for 3D detection.
+### 🔍 Research Background & Motivation
 
-### Technical Challenges
-- **Data-Modality Discrepancy:** Bridging the gap between image/text data and 3D point cloud data.
-- **Annotation-Task Discrepancy:** Translating 2D detection knowledge to 3D detection tasks.
+| Aspect | Description |
+|--------|-------------|
+| **Current Annotation Paradigm** | Relying on hiring **ordinary human annotators** to label data based on **expert-crafted guidelines**. |
+| **Inherent Problems** | Labor-intensive, tedious, and **costly**. |
+| **Our Research Goal** | To explore **auto-annotation** methods that directly leverage **expert-crafted guidelines**. |
 
-### Proposed Approach
-Leverages publicly available Foundation Models (FMs) in a conceptually simple pipeline:
-1.  **2D Object Detection:** Utilize FMs for 2D detection and segmentation in RGB images.
-2.  **3D Lifting:** Lift the 2D detections into 3D space using known sensor poses.
-3.  **3D Cuboid Generation:** Generate a 3D cuboid for each 2D detection within its corresponding frustum.
+> 💡 We aim to reduce manual effort while preserving annotation quality by enabling machines to understand and apply expert knowledge.
 
-### Key Results
-- Through progressive refinement of key components, the pipeline achieves a **21.9** 3D detection mAP.
-- This performance is significantly higher than the **12.1** mAP achieved by existing methods.
-- Demonstrates the promise of Foundation Models for tackling the challenges of automated data annotation.
+---
 
-## Installation
-To set up the repository, follow these steps:
-1. **Clone the Repository**
+### 🏆 The AutoExpert Benchmark
+
+| Feature | Details |
+|--------|---------|
+| **Data Source** | Repurposed from the well-established [nuScenes dataset](https://www.nuscenes.org), widely used in autonomous driving. |
+| **Guidelines** | Authentic, real-world **expert-crafted** annotation rules. |
+| **Object Classes** | Defines **18 object classes** using **nuanced textual descriptions** + a few **visual examples**. |
+| **Annotation Task** | Annotate 3D objects using **3D cuboids** from LiDAR data. |
+| **Core Challenge** | Guidelines contain **no LiDAR visuals**, requiring models to learn from **few-shot labeled images & texts** for 3D detection. |
+
+---
+
+### ⚠️ Technical Challenges
+
+- **🔄 Data-Modality Discrepancy**: Bridging the gap between **2D image/text data** and **3D point clouds**.
+- **🎯 Annotation-Task Discrepancy**: Adapting **2D detection knowledge** to complex **3D detection tasks**.
+
+---
+
+### ✅ Proposed Approach
+
+We propose a **simple yet effective pipeline** leveraging **publicly available Foundation Models (FMs)**:
+
+1. **🔍 2D Object Detection**  
+   Use FMs for **2D detection & segmentation** on RGB images.
+
+2. **🎯 3D Lifting**  
+   Project 2D detections into **3D space** using known **sensor poses**.
+
+3. **📦 3D Cuboid Generation**  
+   Generate a **3D bounding box (cuboid)** for each 2D detection within its **camera frustum**.
+
+---
+
+### 📈 Key Results
+
+| Metric | Our Method | Prior Methods |
+|--------|------------|---------------|
+| **3D Detection mAP** | **21.9** 🚀 | **12.1** |
+  
+> 🎉 Demonstrates the **great potential** of Foundation Models in automating data annotation with expert guidance!
+
+---
+
+## 🛠️ Installation
+
+Follow the steps below to set up the environment:
+
+1. **📥 Clone the Repository**
     ```bash
     git clone https://github.com/annoguide/annoguide3Dbenchmark.git
     ```
-2. **Create the Environment**
+2. **🌱 Create the Conda Environment**
    ```bash
     conda create -n annoguide python=3.8
     conda activate annoguide
     ```
-3. ​**Install MMDetection**
+3. **⚙️ Install MMDetection**
     ```bash
     conda install pytorch torchvision -c pytorch
     pip install -U openmim
@@ -52,44 +84,38 @@ To set up the repository, follow these steps:
     cd mmdetection
     pip install -v -e .
     ```
-4. **Install SAM**
+4. **🔒 Install SAM (Segment Anything Model)**
     ```bash
     pip install segment_anything
     ```
-5. ​**Install Nuscenes-LT3d**
+5. **📦 Install Nuscenes-LT3d**
     ```bash
     git clone https://github.com/neeharperi/nuscenes-lt3d.git
     cd nuscenes-lt3d/setup
     python setup.py install 
     ```
-## Data Preparation
-1. **NuScenes Dataset**
+## 📂 Data Preparation
 
-    Download from [NuScenes](https://www.nuscenes.org/nuscenes)
+| Dataset | Download Link |
+|--------|----------------|
+| **NuScenes Dataset** | [🔗 NuScenes Official](https://www.nuscenes.org/nuscenes) |
+| **Few-shot Data from Guidelines** | [🔗 Google Drive](https://drive.google.com/file/d/1H0igDf6j0DPHh5YDMKfJ3ZpDbpD8UagC/view?usp=sharing) |
+| **Small Validation Set (for Prompt/Model Selection)** | [🔗 Google Drive](https://drive.google.com/file/d/1vHd6W0moZmf0gqQgV-_fHameyGNfqngP/view?usp=sharing) |
 
-2. **Few-shot Data from Guidelines**
+---
 
-    Download through [GoogleDrive](https://drive.google.com/file/d/1H0igDf6j0DPHh5YDMKfJ3ZpDbpD8UagC/view?usp=sharing)
+## 🤖 Models
 
+| Model | Source / Download |
+|-------|-------------------|
+| **GroundingDINO** | [📘 MMDetection Repo](https://github.com/open-mmlab/mmdetection) <br> [🔗 Finetuned Model (Google Drive)](https://drive.google.com/file/d/1Y0Xcr6u9F8-FmQqR65oQBhMRkMWoHu4m/view?usp=drive_link) |
+| **Segment Anything Model (SAM)** | [🔗 Official Repo](https://github.com/facebookresearch/segment-anything) |
 
-3. **Small Validation Set for Prompt/Model Selection**
+---
 
-    Download through [GoogleDrive](https://drive.google.com/file/d/1vHd6W0moZmf0gqQgV-_fHameyGNfqngP/view?usp=sharing)
+## 🔄 Pipeline Execution
 
-## Models
-1. **GroundingDINO**
-
-    The original model can be downloaded through MMDetection: [MMDetection Repository](https://github.com/open-mmlab/mmdetection)
-    
-    The finetuned model with refined class name can be downloaded through [GoogleDrive](https://drive.google.com/file/d/1Y0Xcr6u9F8-FmQqR65oQBhMRkMWoHu4m/view?usp=drive_link)
-
-
-2. **Segment Anything Model (SAM)** 
-
-    Download through official repository: [SAM Repository](https://github.com/facebookresearch/segment-anything)
-
-## Pipeline Execution
-### 2D Detection
+### 🖼️ 2D Detection
 1. **​Generate COCO-format 2D Labels to Prepare Data Used in AutoExpert**
 
      ```bash
@@ -123,7 +149,7 @@ To set up the repository, follow these steps:
     python mmdetection/mmdet/evaluation/metrics/coco_metric.py
     ```
 
-### 3D Cuboids Generation
+### 🧊 3D Cuboids Generation
 1. **Generate 2D Masks with SAM** 
 
      ```bash
@@ -146,11 +172,13 @@ To set up the repository, follow these steps:
      ```bash
     python src/eval/eval_3D_results.py
     ```    
-## Saved Results for Fast Evaluation
-1. **2D Detection Results**
+## 📦 Saved Results for Fast Evaluation
 
-    Download through [GoogleDrive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=sharing)
+| Type | Download Link |
+|------|---------------|
+| **2D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=sharing) |
+| **3D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1aVtFWD6F73CD_dsM3nW2IAVSCKfsAaSz/view?usp=drive_link) |
 
-2. **3D Detection Results** 
+---
 
-    Download through [GoogleDrive](https://drive.google.com/file/d/1aVtFWD6F73CD_dsM3nW2IAVSCKfsAaSz/view?usp=drive_link)
+✅ **Happy Auto-Annotation with Expert Knowledge！**
