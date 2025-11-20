@@ -1,18 +1,36 @@
-# Auto-Annotation from Expert-Crafted Guidelines: A Benchmark through 3D LiDAR Detection
+# Exploring Auto-Annotation with Expert-Crafted Guidelines through 3D LiDAR Detection
 
 ![Framework Overview](images/our_pipeline.png) <!-- Replace with your actual image path -->
 
 ## Overview
-Data annotation is a critical but labor-intensive and costly step in machine learning pipelines, requiring human annotators to label data based on expert-crafted guidelines. To address this challenge, we introduce ​**AnnoGuide**, a benchmark for evaluating automated methods that generate annotations directly from guidelines—eliminating manual labeling.  
 
-As a case study, we repurpose the ​**nuScenes** dataset (used in autonomous driving), leveraging its annotation guidelines for 3D LiDAR point cloud labeling (18 object classes). The task is novel: ​**multi-modal few-shot 3D detection without 3D annotations**, combining limited visual examples and textual descriptions.  
+### Research Background & Motivation
+- **Current Annotation Paradigm:** Relies on hiring ordinary human annotators to label data based on instructions from expert-crafted guidelines.
+- **Inherent Problems:** This paradigm is laborious, tedious, and costly.
+- **Research Goal:** To explore **auto-annotation** methods that leverage **expert**-crafted guidelines directly.
 
-We propose a pipeline using ​**foundation models (FMs)** to:  
-1. Detect and segment objects in RGB images,  
-2. Project 2D detections into 3D using camera poses,  
-3. Cluster LiDAR points within each frustum to generate 3D cuboids.  
+### The AutoExpert Benchmark
+- **Data Source:** Repurposed from the well-established nuScenes dataset, commonly used in autonomous driving research.
+- **Key Features:**
+  - Provides authentic, real-world expert-crafted annotation guidelines.
+  - Guidelines define 18 object classes using nuanced language descriptions and a few visual examples.
+  - Annotation Task: Annotating objects in LiDAR data using 3D cuboids.
+  - **Core Challenge:** The guidelines do not provide LiDAR visuals, soliciting methods that learn from few-shot labeled images and texts for 3D detection.
 
-Starting with off-the-shelf FMs (12.1 mAP), we refine components to achieve ​**21.9 mAP**, demonstrating progress while highlighting AnnoGuide’s open challenges. Our work underscores the need for advancing ​**LiDAR-based foundation models** to further automate annotation.  
+### Technical Challenges
+- **Data-Modality Discrepancy:** Bridging the gap between image/text data and 3D point cloud data.
+- **Annotation-Task Discrepancy:** Translating 2D detection knowledge to 3D detection tasks.
+
+### Proposed Approach
+Leverages publicly available Foundation Models (FMs) in a conceptually simple pipeline:
+1.  **2D Object Detection:** Utilize FMs for 2D detection and segmentation in RGB images.
+2.  **3D Lifting:** Lift the 2D detections into 3D space using known sensor poses.
+3.  **3D Cuboid Generation:** Generate a 3D cuboid for each 2D detection within its corresponding frustum.
+
+### Key Results
+- Through progressive refinement of key components, the pipeline achieves a **21.9** 3D detection mAP.
+- This performance is significantly higher than the **12.1** mAP achieved by existing methods.
+- Demonstrates the promise of Foundation Models for tackling the challenges of automated data annotation.
 
 ## Installation
 To set up the repository, follow these steps:
