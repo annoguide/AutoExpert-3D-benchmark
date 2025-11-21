@@ -31,6 +31,7 @@ import time
 import tqdm
 import numba
 from numba import cuda
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -580,8 +581,8 @@ if __name__ == "__main__":
     total_start = time.time()
     pointsensor_channel="LIDAR_TOP"
     min_dist= 2.3
-    aggregation_pre_num = 1
-    aggregation_next_num = 1
+    aggregation_pre_num = 2
+    aggregation_next_num = 2
     use_mlo_score = True
 
     predictions = {

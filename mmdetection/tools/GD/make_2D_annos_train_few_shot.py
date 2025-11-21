@@ -19,7 +19,7 @@ if __name__ == "__main__":
         "-images_few_shot_dir_path", default="data/nuscenes/images_few_shot/")   
     argparser.add_argument("--labels_dir_path", default="data/nuscenes/samples/labels_2D_COCO/CAM_ALL_train/") 
     argparser.add_argument("--show", default=False)    
-    argparser.add_argument("--show_path", default="outputs/annotation_test/") 
+    argparser.add_argument("--show_path", default="data/nuscenes/outputs/annotation_test/") 
     argparser.add_argument("--output_path", default="data/nuscenes/train_2D_few_shot.json") 
     config = argparser.parse_args()
 

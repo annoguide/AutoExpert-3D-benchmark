@@ -181,7 +181,7 @@ if __name__ == "__main__":
         "--info_data_path", default="./data/nuscenes/nuscenes_infos_val.pkl")   
     argparser.add_argument("--prediction_path", default="outputs/nuscenes/results_3D/test.pkl")   
     argparser.add_argument("--objective_metric", default="HOTA", choices=["HOTA", "MOTA"])   
-    argparser.add_argument("--output_path", default="outputs/nuscenes/results_3D/test_average_score.json")
+    argparser.add_argument("--output_path", default="outputs/nuscenes/results_3D/test_smoothing.json")
     config = argparser.parse_args()
 
     # constants

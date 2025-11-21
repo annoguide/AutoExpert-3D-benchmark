@@ -172,6 +172,75 @@ Follow the steps below to set up the environment:
      ```bash
     python src/eval/eval_3D_results.py
     ```    
+## 🎮 Demo: Single Sequence Inference & Visualization
+
+### 📊 Demo Notebook: `demo-annoexpert-infer-vis.ipynb`
+
+This Jupyter notebook demonstrates our complete pipeline by processing **1 sample sequence** and visualizing the algorithm workflow step by step.
+
+### 🔄 Pipeline Steps:
+
+#### **Cell 0: Save 2D Detections by the Finetuned GroundingDINO (with Evaluation)**
+
+| Component | Description | Visualization |
+|-----------|-------------|---------------|
+| **Model Loading** | Load the finetuned GroundingDINO model with optimized prompts | 📥 |
+| **2D Detection** | Perform object detection on RGB images by refined class name | 🖼️ + 📦 |
+| **Result Saving** | Save 2D bounding boxes with class labels and confidence scores | 💾 |
+| **Evaluation** | Calculate 2D detection metrics (mAP, Recall, Precision) | 📊 |
+
+**Output**: 2D bounding boxes overlaid on camera images with confidence scores and categories
+
+#### **Cell 1: Generate 2D Masks with SAM**
+
+| Component | Description | Visualization |
+|-----------|-------------|---------------|
+| **Mask Generation** | Use Segment Anything Model (SAM) to generate precise segmentation masks | 🎭 |
+| **Instance Segmentation** | Convert bounding boxes to detailed instance masks | ✂️ |
+| **Mask Refinement** | Refine masks based on image boundaries and object contours | 🎯 |
+| **Multi-Object Handling** | Process multiple objects in the same scene | 🔄 |
+
+**Output**: High-quality segmentation masks for each detected object
+
+#### **Cell 2: Generate 3D Cuboids for 2D Masks**
+
+| Component | Description | Visualization |
+|-----------|-------------|---------------|
+| **3D Lifting** | Project LiDAR points into 2D images | 📐 |
+| **Points Estimation** | Estimate LiDAR points for each 2D instance mask | 📏 |
+| **Cuboid Generation** | Generate 3D bounding boxes within MHT | 📦 |
+| **Multi-View Fusion** | Combine 3D detections from multiple camera views | 🔄 |
+
+**Output**: 3D cuboids in LiDAR coordinate system
+
+#### **Cell 3: Visualize the 2D and 3D results in image and BEV**
+
+| Component | Description | Visualization |
+|-----------|-------------|---------------|
+| **Image Space Visualization** | Overlay 3D boxes on multiple camera views | 🖼️ |
+| **BEV (Bird's Eye View)** | Display 3D cuboids in top-down LiDAR view | 🗺️ |
+| **Result Analysis** | Compare auto-annotations with ground truth | 📊 |
+
+**Output**: Comprehensive multi-view visualizations:
+- **Camera view**: 3D detections
+- **BEV view**: 3D cuboids in point cloud
+- **Side-by-side comparisons**
+
+### 🎯 Demo Features:
+
+| Feature | Benefit |
+|---------|---------|
+| **🔬 Step-by-Step Visualization** | Understand each stage of the auto-annotation pipeline |
+| **📊 Intermediate Results** | See how 2D detections transform into 3D annotations |
+| **🌍 Multi-Modal Display** | Camera images + LiDAR point clouds + BEV maps |
+| **📈 Quality Metrics** | Quantitative assessment of annotation quality |
+
+### 🚀 Quick Start:
+```bash
+# Launch the demo notebook
+jupyter notebook demo-annoexpert-infer-vis.ipynb
+```   
+
 ## 📦 Saved Results for Fast Evaluation
 
 | Type | Download Link |

@@ -169,11 +169,11 @@ def evaluate_single(result_path,
     detail['{}/mAP'.format(metric_prefix)] = metrics['mean_ap']
     return detail
 
-def eval_main(json_path='outputs/nuscenes/results_3D/test_average_score.json'):
+def eval_main(json_path='outputs/nuscenes/results_3D/test_smoothing.json'):
     metric_type = 'standard'
     ret_dict = evaluate_single(json_path, out_path='outputs/nuscenes/results_3D', metric_type=metric_type)
 
 if __name__ == "__main__": 
-    eval_main(json_path='outputs/nuscenes/results_3D/test_average_score.json')
-    result_str_dict, ap, nds = LCA0(eval_cls=test_name)
+    eval_main(json_path='outputs/nuscenes/results_3D/test_smoothing.json')
+    result_str_dict, ap, nds = LCA0()
 

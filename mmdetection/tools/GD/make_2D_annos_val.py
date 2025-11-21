@@ -10,11 +10,11 @@ CLASSES = ['car', 'truck', 'trailer', 'bus', 'construction_vehicle', 'bicycle', 
 if __name__ == "__main__": 
     argparser = ArgumentParser()
     argparser.add_argument(
-        "--images_dir_path", default="data/nuscenes/images_val_small/")   
+        "--images_dir_path", default="data/nuscenes/images_val/")   
     argparser.add_argument("--labels_dir_path", default="data/nuscenes/samples/labels_2D_COCO/CAM_ALL_val/") 
     argparser.add_argument("--show", default=False)    
-    argparser.add_argument("--show_path", default="outputs/annotation_test/") 
-    argparser.add_argument("--output_path", default="data/nuscenes/test_2D_val_small.json") 
+    argparser.add_argument("--show_path", default="data/nuscenes/outputs/annotation_test/") 
+    argparser.add_argument("--output_path", default="data/nuscenes/test_2D_val.json") 
     config = argparser.parse_args()
 
     coco_output = {

@@ -4,9 +4,9 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description='Filter detection results by score threshold and add file names')
-    parser.add_argument('--r_path', type=str, default='data/outputs/result_2D_val.json',
+    parser.add_argument('--r_path', type=str, default='data/nuscenes/outputs/result_2D_val.json',
                        help='Input result file path')
-    parser.add_argument('--output_path', type=str, default='data/outputs/result_2D_val.json',
+    parser.add_argument('--output_path', type=str, default='data/nuscenes/outputs/result_2D_val.json',
                        help='Output filtered result file path')
     parser.add_argument('--annos_path', type=str, default='data/nuscenes/test_2D_val.json',
                        help='Annotations file path')

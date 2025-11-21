@@ -15,7 +15,10 @@ from segment_anything import SamAutomaticMaskGenerator, SamPredictor, build_sam
 from tqdm import tqdm
 import pycocotools.mask
 import pickle
-from cfg.prompt_cfg import PROMPT_MAPS       
+from cfg.prompt_cfg import PROMPT_MAPS  
+ 
+import warnings
+warnings.filterwarnings("ignore")    
 
 def draw_mask(mask, draw, random_color=False):
     if random_color:
@@ -64,7 +67,7 @@ def parse_args():
                         help="Path to the SAM checkpoint file")
     parser.add_argument("--output_dir", type=str, default="outputs/nuscenes/results_mask/nuscenes-gd-sam/",
                         help="Directory to save the output results")
-    parser.add_argument("--gd_path", type=str, default="data/outputs/result_2D_val.json",
+    parser.add_argument("--gd_path", type=str, default="data/nuscenes/outputs/result_2D_val.json",
                         help="Path to the 2D ground truth or detection JSON file")
 
     args = parser.parse_args()
