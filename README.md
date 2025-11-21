@@ -141,7 +141,7 @@ Follow the steps below to set up the environment:
 5. **Save 2D Detections by the Finetuned GroundingDINO (with Evaluation)**
 
      ```bash
-    python mmdetection/tools/test.py mmdetection/configs/mm_grounding_dino/grounding_dino_swin-l_finetune_8xb4_20e_nuscenes_test.py outputs/nuscenes/weights/epoch_6.pth
+    python mmdetection/tools/test.py mmdetection/configs/mm_grounding_dino/grounding_dino_swin-l_finetune_8xb4_20e_nuscenes_test.py weights/GD.pth
     ```
 6. **Evaluate the Saved 2D Detections**
 
