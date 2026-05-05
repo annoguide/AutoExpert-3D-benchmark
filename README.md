@@ -65,7 +65,7 @@ Follow the steps below to set up the environment (Tested on 4× NVIDIA A100 GPUs
 
 1. **📥 Clone the Repository**
     ```bash
-    git clone [https://github.com/annoguide/annoguide3Dbenchmark.git](https://github.com/annoguide/annoguide3Dbenchmark.git)
+    git clone https://github.com/annoguide/annoguide3Dbenchmark.git
     cd annoguide3Dbenchmark
     ```
 2. **🌱 Create the Conda Environment**
