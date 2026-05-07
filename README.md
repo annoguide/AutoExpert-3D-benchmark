@@ -18,7 +18,7 @@
 
 ---
 
-### 🏆 The AutoExpert Benchmark
+### 🏆 The AutoExpert-nuScenes Benchmark
 
 | Feature | Details |
 |--------|---------|
@@ -28,6 +28,7 @@
 | **Annotation Task** | Annotate 3D objects using **3D cuboids** from LiDAR data. |
 | **Core Challenge** | Guidelines contain **no LiDAR visuals**, requiring models to learn from **few-shot labeled images & texts** for 3D detection. |
 
+*Note: AutoExpert-nuScenes is primarily intended for model development and validation. For our official CVPR 2026 Workshop Challenge, we utilize the AutoExpert-PandaSet benchmark; please visit our [challenge space](https://huggingface.co/spaces/autoexpert-cvpr2026-workshop/auto3D) for more details.*
 ---
 
 ### ⚠️ Technical Challenges
@@ -96,18 +97,18 @@ Follow the steps below to set up the environment (Tested on 4× NVIDIA A100 GPUs
 | Dataset | Download Link |
 |--------|----------------|
 | **NuScenes Dataset** | [🔗 NuScenes Official](https://www.nuscenes.org/nuscenes) |
-| **Few-shot Data from Guidelines** | [🔗 Google Drive] |
-| **Small Validation Set (for Prompt/Model Selection)** | [🔗 Google Drive] |
+| **Few-shot Data from Guidelines** | [🔗 Google Drive](https://drive.google.com/file/d/1H0igDf6j0DPHh5YDMKfJ3ZpDbpD8UagC/view?usp=drive_link) |
+| **Small Validation Set (for Prompt/Model Selection)** | [🔗 Google Drive](https://drive.google.com/file/d/1vHd6W0moZmf0gqQgV-_fHameyGNfqngP/view?usp=drive_link) |
 
 ---
 
 ## 🤖 Models
 
 | Model | Source / Download |
-|-------|-------------------|
-| **GroundingDINO** | [📘 MMDetection Repo](https://github.com/open-mmlab/mmdetection) <br> [🔗 Finetuned Model (Google Drive)] |
-| **Segment Anything Model (SAM)** | [🔗 Official Repo](https://github.com/facebookresearch/segment-anything) |
-| **Vision Language Model (VLM)** | Hosted via `vLLM` (e.g., Qwen3-VL) or OpenAI API (GPT-4o) |
+| :--- | :--- |
+| **GroundingDINO** | [📘 MMDetection Repo](https://github.com/open-mmlab/mmdetection) <br> [📥 Finetuned Weights (Google Drive)](https://drive.google.com/file/d/1Y0Xcr6u9F8-FmQqR65oQBhMRkMWoHu4m/view?usp=drive_link) |
+| **Segment Anything (SAM)** | [📘 Official GitHub Repo](https://github.com/facebookresearch/segment-anything) |
+| **Vision Language Model (VLM)** | **Local:** [🚀 vLLM](https://github.com/vllm-project/vllm) / [🤖 Qwen-VL](https://github.com/QwenLM/Qwen-VL) <br> **Cloud:** [☁️ OpenAI API (GPT-4o)](https://platform.openai.com/docs/guides/vision) |
 
 ---
 
@@ -175,9 +176,7 @@ Follow the steps below to set up the environment (Tested on 4× NVIDIA A100 GPUs
 
 | Type | Download Link |
 |------|---------------|
-| **2D Detection Results** | [🔗 Google Drive]|
-| **3D Detection Results** | [🔗 Google Drive]|
+| **2D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=drive_link)|
+| **3D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1aqK5FFMZhofyxYRVvQ1TfTUuz2YhHOAq/view?usp=drive_link)|
 
 ---
-
-✅ **Happy Auto-Annotation with Expert Knowledge！**
