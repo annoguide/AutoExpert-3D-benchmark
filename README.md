@@ -174,9 +174,9 @@ Follow the steps below to set up the environment (Tested on 4× NVIDIA A100 GPUs
     ```
 ## 📦 Saved Results for Fast Evaluation
 
-| Type | Download Link |
-|------|---------------|
-| **2D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=drive_link)|
-| **3D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1aqK5FFMZhofyxYRVvQ1TfTUuz2YhHOAq/view?usp=drive_link)|
+| Type | Download Link | Size |
+| :--- | :--- | :--- |
+| **2D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1p39B3_ZCE5OKRYLZKMifvinYY0kzvqmo/view?usp=drive_link) | `694.6 MB` |
+| **3D Detection Results** | [🔗 Google Drive](https://drive.google.com/file/d/1aqK5FFMZhofyxYRVvQ1TfTUuz2YhHOAq/view?usp=drive_link) | `396.1 MB` |
 
 ---
