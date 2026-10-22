@@ -1,3 +1,7 @@
+# This repo is no longer updated. Please refer to the new one for the latest version: https://github.com/cc50121/AutoExpert-3D-benchmark
+
+---
+
 # 🚗📡 Auto-Annotation with Expert-Crafted Guidelines: A Study through 3D LiDAR Detection Benchmark
 
 ![Framework Overview](images/our_pipeline.png) <!-- Replace with your actual image path -->
